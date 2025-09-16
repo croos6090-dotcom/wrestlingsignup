@@ -9,21 +9,14 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         .slot-available:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        .status-red {
-            border-left: 4px solid #ef4444;
-        }
-        .status-yellow {
-            border-left: 4px solid #f59e0b;
-        }
-        .status-green {
-            border-left: 4px solid #10b981;
-        }
+        .status-red { border-left: 4px solid #ef4444; }
+        .status-yellow { border-left: 4px solid #f59e0b; }
+        .status-green { border-left: 4px solid #10b981; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -61,15 +54,15 @@
             </p>
         </div>
 
-        <div class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto" data-aos="fade-up">
+        <!-- Volunteer Info Section -->
+        <div id="volunteer-info" class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto mb-8" data-aos="fade-up" style="display:none;">
             <div class="text-center">
                 <div class="bg-indigo-100 p-4 rounded-full inline-block mb-6">
                     <i data-feather="calendar" class="text-indigo-600 w-8 h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Practice Volunteer System</h2>
-                <p class="text-gray-600 mb-6">
-                    Sign up for one practice session per week. The system automatically fills empty slots fairly 
-                    to ensure everyone contributes equally.
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome, <span id="user-name"></span>!</h2>
+                <p class="text-gray-600 mb-6" id="user-summary">
+                    Loading your volunteer information...
                 </p>
                 <a href="calendar.html" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition">
                     View Practice Calendar
@@ -131,8 +124,15 @@
         </div>
     </footer>
 
+    <!-- Firebase & Vanta -->
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+
     <script>
+        // Vanta background
         VANTA.GLOBE({
             el: "#vanta-bg",
             mouseControls: true,
@@ -151,13 +151,32 @@
             menu.classList.toggle('hidden');
         });
 
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
-
+        AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
         feather.replace();
+
+        // Show volunteer info when user logs in
+        function onUserLogin(user) {
+            const infoDiv = document.getElementById('volunteer-info');
+            const nameSpan = document.getElementById('user-name');
+            const summaryP = document.getElementById('user-summary');
+
+            infoDiv.style.display = 'block';
+            nameSpan.textContent = user.displayName || user.email;
+
+            // Load user's volunteer data from Firestore
+            const docRef = firebase.firestore().collection('users').doc(user.uid);
+            docRef.get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    summaryP.textContent = `You have volunteered for ${data.sessions || 0} sessions this month.`;
+                } else {
+                    summaryP.textContent = "You have not signed up for any sessions yet.";
+                }
+            }).catch(err => {
+                summaryP.textContent = "Error loading your data.";
+                console.error(err);
+            });
+        }
     </script>
 </body>
 </html>
