@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wrestling Team Volunteer System</title>
@@ -10,173 +10,186 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
-        .slot-available:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        .status-red { border-left: 4px solid #ef4444; }
-        .status-yellow { border-left: 4px solid #f59e0b; }
-        .status-green { border-left: 4px solid #10b981; }
+      .slot-available:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .status-red {
+        border-left: 4px solid #ef4444;
+      }
+
+      .status-yellow {
+        border-left: 4px solid #f59e0b;
+      }
+
+      .status-green {
+        border-left: 4px solid #10b981;
+      }
     </style>
-</head>
-<body class="bg-gray-50">
+  </head>
+  <body class="bg-gray-50">
     <div id="vanta-bg" class="fixed inset-0 -z-10 opacity-20"></div>
-    
     <nav class="bg-indigo-700 text-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-4">
-                    <i data-feather="users" class="w-8 h-8"></i>
-                    <span class="font-semibold text-xl">Wrestling Volunteers</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="calendar.html" class="hover:text-indigo-200 transition">Calendar</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="p-2 focus:outline-none">
-                        <i data-feather="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
-            </div>
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-4">
+            <i data-feather="users" class="w-8 h-8"></i>
+            <span class="font-semibold text-xl">Wrestling Volunteers</span>
+          </div>
+          <div class="hidden md:flex space-x-8">
+            <a href="calendar.html" class="hover:text-indigo-200 transition">Calendar</a>
+          </div>
+          <div class="md:hidden">
+            <button id="mobile-menu-button" class="p-2 focus:outline-none">
+              <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
+          </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-indigo-800 px-4 pb-4">
-            <a href="calendar.html" class="block py-2 hover:text-indigo-200 transition">Calendar</a>
-            <a href="roster.html" class="block py-2 hover:text-indigo-200 transition">Roster</a>
-            <a href="profile.html" class="block py-2 hover:text-indigo-200 transition">My Profile</a>
-        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden bg-indigo-800 px-4 pb-4">
+        <a href="calendar.html" class="block py-2 hover:text-indigo-200 transition">Calendar</a>
+        <a href="roster.html" class="block py-2 hover:text-indigo-200 transition">Roster</a>
+        <a href="profile.html" class="block py-2 hover:text-indigo-200 transition">My Profile</a>
+      </div>
     </nav>
-
     <main class="max-w-6xl mx-auto px-4 py-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Wrestling Team Volunteer System</h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Sign up for practice sessions, track your volunteer hours, and help the team run smoothly.
-            </p>
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Wrestling Team Volunteer System</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto"> Sign up for practice sessions, track your volunteer hours, and help the team run smoothly. </p>
+      </div>
+      <!-- Volunteer Info Section -->
+      <div id="volunteer-info" class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto mb-8" data-aos="fade-up" style="display:none;">
+        <div class="text-center">
+          <div class="bg-indigo-100 p-4 rounded-full inline-block mb-6">
+            <i data-feather="calendar" class="text-indigo-600 w-8 h-8"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome, <span id="user-name"></span>! </h2>
+          <p class="text-gray-600 mb-6" id="user-summary"> Loading your volunteer information... </p>
+          <a href="calendar.html" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"> View Practice Calendar <i data-feather="arrow-right" class="ml-2 w-5 h-5"></i>
+          </a>
         </div>
-
-        <!-- Volunteer Info Section -->
-        <div id="volunteer-info" class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto mb-8" data-aos="fade-up" style="display:none;">
-            <div class="text-center">
-                <div class="bg-indigo-100 p-4 rounded-full inline-block mb-6">
-                    <i data-feather="calendar" class="text-indigo-600 w-8 h-8"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome, <span id="user-name"></span>!</h2>
-                <p class="text-gray-600 mb-6" id="user-summary">
-                    Loading your volunteer information...
-                </p>
-                <a href="calendar.html" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition">
-                    View Practice Calendar
-                    <i data-feather="arrow-right" class="ml-2 w-5 h-5"></i>
-                </a>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-8" data-aos="fade-up">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Simple & Fair System</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-2 mr-4 mt-1">
+              <i data-feather="user-check" class="text-indigo-600 w-5 h-5"></i>
             </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-8" data-aos="fade-up">
-            <h2 class="text-2xl font-semibold mb-4 text-center">Simple & Fair System</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="flex items-start">
-                    <div class="bg-indigo-100 rounded-full p-2 mr-4 mt-1">
-                        <i data-feather="user-check" class="text-indigo-600 w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium">One Session Per Week</h3>
-                        <p class="text-gray-600">Each wrestler can sign up for only one practice session per week.</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-indigo-100 rounded-full p-2 mr-4 mt-1">
-                        <i data-feather="refresh-cw" class="text-indigo-600 w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium">Automatic Fair Assignment</h3>
-                        <p class="text-gray-600">Empty slots are filled fairly based on who has volunteered least.</p>
-                    </div>
-                </div>
+            <div>
+              <h3 class="font-medium">One Session Per Week</h3>
+              <p class="text-gray-600">Each wrestler can sign up for only one practice session per week.</p>
             </div>
+          </div>
+          <div class="flex items-start">
+            <div class="bg-indigo-100 rounded-full p-2 mr-4 mt-1">
+              <i data-feather="refresh-cw" class="text-indigo-600 w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-medium">Automatic Fair Assignment</h3>
+              <p class="text-gray-600">Empty slots are filled fairly based on who has volunteered least.</p>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
-
     <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <div class="flex items-center">
-                        <i data-feather="award" class="w-6 h-6 mr-2"></i>
-                        <span class="font-semibold text-lg">Wrestling Volunteers</span>
-                    </div>
-                    <p class="text-gray-400 mt-2">Helping the team succeed together</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="mail" class="w-5 h-5"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="help-circle" class="w-5 h-5"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="settings" class="w-5 h-5"></i>
-                    </a>
-                </div>
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <div class="flex items-center">
+              <i data-feather="award" class="w-6 h-6 mr-2"></i>
+              <span class="font-semibold text-lg">Wrestling Volunteers</span>
             </div>
-            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
-                &copy; 2023 Wrestling Team Volunteer System. All rights reserved.
-            </div>
+            <p class="text-gray-400 mt-2">Helping the team succeed together</p>
+          </div>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i data-feather="mail" class="w-5 h-5"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i data-feather="help-circle" class="w-5 h-5"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i data-feather="settings" class="w-5 h-5"></i>
+            </a>
+          </div>
         </div>
+        <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm"> &copy; 2023 Wrestling Team Volunteer System. All rights reserved. </div>
+      </div>
     </footer>
-
     <!-- Firebase & Vanta -->
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
-
     <script>
-        // Vanta background
-        VANTA.GLOBE({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0x4f46e5,
-            backgroundColor: 0xf8fafc
+      // Vanta background
+      VANTA.GLOBE({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x4f46e5,
+        backgroundColor: 0xf8fafc
+      });
+      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+      });
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+      feather.replace();
+      // Show volunteer info when user logs in
+      function onUserLogin(user) {
+        const infoDiv = document.getElementById('volunteer-info');
+        const nameSpan = document.getElementById('user-name');
+        const summaryP = document.getElementById('user-summary');
+        infoDiv.style.display = 'block';
+        nameSpan.textContent = user.displayName || user.email;
+        // Load user's volunteer data from Firestore
+        const docRef = firebase.firestore().collection('users').doc(user.uid);
+        docRef.get().then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            summaryP.textContent = `You have volunteered for ${data.sessions || 0} sessions this month.`;
+          } else {
+            summaryP.textContent = "You have not signed up for any sessions yet.";
+          }
+        }).catch(err => {
+          summaryP.textContent = "Error loading your data.";
+          console.error(err);
         });
-
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
-        feather.replace();
-
-        // Show volunteer info when user logs in
-        function onUserLogin(user) {
+        // Monitor auth state
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            // User is signed in
+            onUserLogin(user);
+          } else {
+            // User is not signed in, show a login prompt
             const infoDiv = document.getElementById('volunteer-info');
+            infoDiv.style.display = 'block';
             const nameSpan = document.getElementById('user-name');
             const summaryP = document.getElementById('user-summary');
-
-            infoDiv.style.display = 'block';
-            nameSpan.textContent = user.displayName || user.email;
-
-            // Load user's volunteer data from Firestore
-            const docRef = firebase.firestore().collection('users').doc(user.uid);
-            docRef.get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    summaryP.textContent = `You have volunteered for ${data.sessions || 0} sessions this month.`;
-                } else {
-                    summaryP.textContent = "You have not signed up for any sessions yet.";
-                }
-            }).catch(err => {
-                summaryP.textContent = "Error loading your data.";
-                console.error(err);
-            });
-        }
+            nameSpan.textContent = "Guest";
+            summaryP.innerHTML = `
+                    
+							<a href="login.html" class="text-indigo-600 underline hover:text-indigo-800">
+                        Sign in
+                    </a> to view your volunteer info and calendar.
+                `;
+          }
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
